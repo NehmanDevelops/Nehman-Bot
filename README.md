@@ -53,7 +53,7 @@ NehmanBot is hosted on **Heroku**, allowing it to run 24/7 without any interrupt
 
 ## 🧑‍💻 About the Developer
 
-Created by **Nehman**, a passionate computer science student at York University, dedicated to building innovative and practical solutions. Check out my [LinkedIn](https://www.linkedin.com/in/nehman-develops) for more projects and updates!
+Created by **Nehman**, a  computer science student at York University, dedicated to building innovative and practical solutions. Check out my [LinkedIn](https://www.linkedin.com/in/nehman-rahimi-916225258/) for more projects and updates
 
 
 ## 📝 License
