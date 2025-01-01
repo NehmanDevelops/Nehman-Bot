@@ -243,28 +243,19 @@ class TicTacToe(commands.Cog):
 
     @commands.command(name="tictactoe")
     async def start_game(self, ctx, opponent: discord.Member):
-        """
-        Starts a game of Tic-Tac-Toe.
-        Usage: !tictactoe @opponent
-        """
         if ctx.author == opponent:
             await ctx.send("You cannot play against yourself!")
             return
-
         if self.game_board:
             await ctx.send("A game is already in progress! Please wait for it to finish.")
             return
-
-        # Initialize the game
         self.game_board = [" " for _ in range(9)]
         self.players = {ctx.author: "X", opponent: "O"}
         self.current_player = ctx.author
-
         await ctx.send(f"{ctx.author.mention} (X) vs {opponent.mention} (O)\nType `!move [position]` to play!")
         await self.display_board(ctx)
 
     async def display_board(self, ctx):
-        """Displays the current game board."""
         board = "\n".join([
             f"{self.game_board[0]} | {self.game_board[1]} | {self.game_board[2]}",
             "---+---+---",
@@ -276,48 +267,44 @@ class TicTacToe(commands.Cog):
 
     @commands.command(name="move")
     async def make_move(self, ctx, position: int):
-        """
-        Makes a move in the Tic-Tac-Toe game.
-        Usage: !move [position]
-        """
         if not self.game_board:
             await ctx.send("No game in progress. Start one with `!tictactoe @opponent`.")
             return
-
         if ctx.author != self.current_player:
             await ctx.send(f"It's not your turn, {ctx.author.mention}!")
             return
-
         if position < 1 or position > 9 or self.game_board[position - 1] != " ":
             await ctx.send("Invalid move! Choose a position between 1-9 that isn't already taken.")
             return
-
-        # Make the move
         self.game_board[position - 1] = self.players[ctx.author]
-
-        # Check for a winner
         if self.check_winner():
             await ctx.send(f"{ctx.author.mention} wins!")
             self.reset_game()
             return
-
-        # Check for a tie
         if " " not in self.game_board:
             await ctx.send("It's a tie!")
             self.reset_game()
             return
-
-        # Switch turns
         self.current_player = next(player for player in self.players if player != ctx.author)
         await self.display_board(ctx)
         await ctx.send(f"It's {self.current_player.mention}'s turn!")
 
+    @commands.command(name="endgame")
+    async def end_game(self, ctx):
+        if not self.game_board:
+            await ctx.send("No game is currently in progress.")
+            return
+        if ctx.author not in self.players:
+            await ctx.send("You are not part of the current game!")
+            return
+        await ctx.send(f"The game has been ended by {ctx.author.mention}.")
+        self.reset_game()
+
     def check_winner(self):
-        """Checks if the current player has won."""
         winning_combinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
-            [0, 4, 8], [2, 4, 6],            # Diagonals
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6],
         ]
         for combo in winning_combinations:
             if self.game_board[combo[0]] == self.game_board[combo[1]] == self.game_board[combo[2]] != " ":
@@ -325,7 +312,6 @@ class TicTacToe(commands.Cog):
         return False
 
     def reset_game(self):
-        """Resets the game state."""
         self.game_board = None
         self.players = {}
         self.current_player = None

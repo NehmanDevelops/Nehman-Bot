@@ -75,8 +75,9 @@ class HelpCog(commands.Cog):
             name="🎮 Games",
             value=(
                 "`!tictactoe <@opponent>`: Start a game of Tic-Tac-Toe with an opponent.\n"
-                "`!move <position>`: Make a move in an ongoing Tic-Tac-Toe game."
-                "'!rolldice': Rolls a dice between 1-6"
+                "`!move <position>`: Make a move in an ongoing Tic-Tac-Toe game.\n"
+                "`!rolldice`: Rolls a dice between 1-6.\n"
+                "`!generate a poem about (Enter)`: Will submit a poem.\n"
             ),
             inline=False
         )
